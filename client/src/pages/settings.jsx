@@ -107,55 +107,51 @@ const Settings = () => {
   return (
     <div className="min-h-screen bg-black flex">
       <Sidebar />
-      <div className="flex-1 p-6">
-        <div className="max-w-2xl px-8">
-          <div className="mb-8">
-            <h1 className="text-3xl font-semibold text-white mb-2">
-              Account Settings
-            </h1>
-            <p className="text-zinc-400">Manage your account and get support</p>
+      <main className="flex-1 p-8">
+        <div className="mb-8">
+          <h1 className="text-3xl font-semibold text-white mb-2">
+            Account Settings
+          </h1>
+          <p className="text-zinc-400">Manage your account and get support</p>
+        </div>
+
+        <div className="bg-zinc-900 border border-zinc-800 rounded-lg p-6 max-w-2xl">
+          <div className="space-y-4">
+            {settingsButtons.map((button) => (
+              <button
+                key={button.id}
+                onClick={button.onClick}
+                className={getButtonStyles(button.variant)}
+              >
+                <div className="flex items-center space-x-3">
+                  <span className={`text-xl ${getTextStyles(button.variant)}`}>
+                    {button.icon}
+                  </span>
+                  <span className={getTextStyles(button.variant)}>
+                    {button.label}
+                  </span>
+                </div>
+                <span
+                  className={
+                    button.variant === "danger"
+                      ? "text-red-400"
+                      : "text-zinc-400"
+                  }
+                >
+                  →
+                </span>
+              </button>
+            ))}
           </div>
 
-          <div className="bg-zinc-900 border border-zinc-800 rounded-lg p-6">
-            <div className="space-y-4">
-              {settingsButtons.map((button) => (
-                <button
-                  key={button.id}
-                  onClick={button.onClick}
-                  className={getButtonStyles(button.variant)}
-                >
-                  <div className="flex items-center space-x-3">
-                    <span
-                      className={`text-xl ${getTextStyles(button.variant)}`}
-                    >
-                      {button.icon}
-                    </span>
-                    <span className={getTextStyles(button.variant)}>
-                      {button.label}
-                    </span>
-                  </div>
-                  <span
-                    className={
-                      button.variant === "danger"
-                        ? "text-red-400"
-                        : "text-zinc-400"
-                    }
-                  >
-                    →
-                  </span>
-                </button>
-              ))}
-            </div>
-
-            <div className="mt-8 pt-6 border-t border-zinc-700">
-              <p className="text-sm text-zinc-500 text-center">
-                Need help? Contact our support team or report any issues you
-                encounter.
-              </p>
-            </div>
+          <div className="mt-8 pt-6 border-t border-zinc-700">
+            <p className="text-sm text-zinc-500 text-center">
+              Need help? Contact our support team or report any issues you
+              encounter.
+            </p>
           </div>
         </div>
-      </div>
+      </main>
 
       {/* Logout Confirmation Dialog */}
       {showLogoutConfirm && (
