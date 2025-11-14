@@ -53,7 +53,7 @@ export const ExpenseProvider = ({ children }) => {
     try {
       const token = localStorage.getItem("accessToken");
       const response = await axios.post(
-        "http://localhost:3300/api/add-expense",
+        "http://localhost:3300/api/expenses/create",
         expenseData,
         {
           headers: {
@@ -68,10 +68,7 @@ export const ExpenseProvider = ({ children }) => {
       return { success: true, data: response.data };
     } catch (err) {
       console.error("Add expense failed:", err);
-      return {
-        success: false,
-        error: err.response?.data?.message || err.message,
-      };
+      throw err;
     }
   };
 
@@ -108,6 +105,13 @@ export const ExpenseProvider = ({ children }) => {
       .reduce((sum, expense) => sum + (expense.amount || 0), 0);
   };
 
+  // Calculate total income from transactions (only income type)
+  const getTotalIncome = () => {
+    return expenses
+      .filter((expense) => expense.type === "income")
+      .reduce((sum, expense) => sum + (expense.amount || 0), 0);
+  };
+
   // Get expenses by category
   const getExpensesByCategory = (category) => {
     return expenses.filter(
@@ -137,6 +141,7 @@ export const ExpenseProvider = ({ children }) => {
     addExpense,
     deleteExpense,
     getTotalSpent,
+    getTotalIncome,
     getExpensesByCategory,
     getCategoryTotals,
   };

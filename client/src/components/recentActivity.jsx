@@ -82,7 +82,7 @@ const RecentActivity = ({ expenses = [] }) => {
     const colors = getCategoryColors(expense.category);
     return {
       id: expense._id,
-      name: expense.description || expense.category,
+      name: expense.title || expense.description || expense.category,
       date: formatDate(expense.date),
       amount: expense.type === "expense" ? -expense.amount : expense.amount,
       type: expense.type,

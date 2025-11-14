@@ -74,7 +74,7 @@ export function Transactions() {
     const date = new Date(expense.date);
     return {
       id: expense._id,
-      name: expense.description || expense.category,
+      name: expense.title || expense.description || expense.category,
       date: expense.date,
       time: date.toLocaleTimeString("en-US", {
         hour: "2-digit",
@@ -86,7 +86,7 @@ export function Transactions() {
       icon: getCategoryIcon(expense.category),
       bgColor: colors.bg,
       iconColor: colors.icon,
-      description: expense.description || expense.category,
+      description: expense.description || expense.title || expense.category,
       location: "N/A",
       paymentMethod: "N/A",
     };

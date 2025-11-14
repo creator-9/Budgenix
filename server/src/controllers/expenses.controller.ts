@@ -9,18 +9,19 @@ export const createExpense = async (
 ): Promise<unknown> => {
   try {
     const userId = req.userId;
-    const { amount, category, date, description, type } =
+    const { amount, category, date, description, type ,title} =
       req.body as Partial<IExpense>;
     if (!userId || !amount || !category || !type) {
       return res.status(400).json({ message: "Missing required fields" });
     }
     const newExpense = new Expense({
-      userId,
-      amount,
-      category,
-      type,
-      date: date || new Date(),
-      description,
+        title,
+        userId,
+        amount,
+        category,
+        type,
+        date: date || new Date(),
+        description,
     });
     await newExpense.save();
     return res
