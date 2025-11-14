@@ -1,5 +1,5 @@
 import { useState } from "react";
-
+import RecentActivity from "../components/recentActivity";
 export default function Dashboard() {
   return (
     <div className="min-h-screen w-full bg-black flex">
@@ -26,6 +26,8 @@ export default function Dashboard() {
             trend="up"
             trendText="58% left to spend"
           />
+
+          <RecentActivity />
         </section>
       </main>
     </div>
