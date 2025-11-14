@@ -108,12 +108,14 @@ const RecentActivity = ({ expenses = [] }) => {
   };
 
   return (
-    <div className="bg-zinc-900 rounded-lg p-6 border border-zinc-800">
+    <div className="bg-zinc-900 rounded-lg border border-zinc-800 flex flex-col h-full">
       {/* Header */}
-      <h3 className="text-lg font-semibold text-white mb-6">Recent Activity</h3>
+      <div className="p-6 pb-4">
+        <h3 className="text-lg font-semibold text-white">Recent Activity</h3>
+      </div>
 
-      {/* Transaction List */}
-      <div className="space-y-4">
+      {/* Transaction List - Scrollable */}
+      <div className="flex-1 px-6 overflow-y-auto space-y-4">
         {transactions.length > 0 ? (
           transactions.map((transaction) => (
             <div
@@ -212,8 +214,8 @@ const RecentActivity = ({ expenses = [] }) => {
         )}
       </div>
 
-      {/* View All Link */}
-      <div className="mt-6 pt-4 border-t border-gray-700">
+      {/* View All Link - Fixed at bottom */}
+      <div className="p-6 pt-4 border-t border-zinc-800 mt-auto">
         <Link
           to="/transactions"
           className="text-teal-400 text-sm font-medium hover:text-teal-300 transition-colors inline-block"

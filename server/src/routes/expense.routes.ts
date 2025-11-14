@@ -1,11 +1,11 @@
 import { Router } from "express";
 import { createExpense, deleteExpense, getExpenses } from "../controllers/expenses.controller.js";
 import { verifyJwt } from "../middleware/verifyJwt.js";
-const router = Router();
+const route = Router();
 
 // Import expense controller functions
-router.post("/create",verifyJwt, createExpense);
-router.delete("/delete/:expenseId",verifyJwt,deleteExpense);
-router.get("/get-expenses",verifyJwt,getExpenses);
+route.post("/create",verifyJwt, createExpense);
+route.delete("/delete/:expenseId",verifyJwt,deleteExpense);
+route.get("/get-expenses",verifyJwt,getExpenses);
 
-export default router;
+export default route;

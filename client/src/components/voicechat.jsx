@@ -176,8 +176,6 @@ const VoiceAssistant = () => {
   };
 
   const [isOpen, setIsOpen] = useState(false);
-  const [isListening, setIsListening] = useState(false);
-  const [isProcessing, setIsProcessing] = useState(false);
   const [transcript, setTranscript] = useState("");
   const [messages, setMessages] = useState([
     {
@@ -190,7 +188,6 @@ const VoiceAssistant = () => {
   ]);
   const [isTyping, setIsTyping] = useState(false);
 
-  const recognitionRef = useRef(null);
   const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {
@@ -200,61 +197,6 @@ const VoiceAssistant = () => {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
-
-  useEffect(() => {
-    if ("webkitSpeechRecognition" in window || "SpeechRecognition" in window) {
-      const SpeechRecognition =
-        window.SpeechRecognition || window.webkitSpeechRecognition;
-      recognitionRef.current = new SpeechRecognition();
-      recognitionRef.current.continuous = true;
-      recognitionRef.current.interimResults = true;
-      recognitionRef.current.lang = "en-US";
-
-      recognitionRef.current.onresult = (event) => {
-        let finalTranscript = "";
-        for (let i = event.resultIndex; i < event.results.length; i++) {
-          if (event.results[i].isFinal) {
-            finalTranscript += event.results[i][0].transcript;
-          }
-        }
-        if (finalTranscript) {
-          setTranscript(finalTranscript);
-          handleSendMessage(finalTranscript);
-          stopListening();
-        }
-      };
-
-      recognitionRef.current.onerror = (event) => {
-        console.error("Speech recognition error:", event.error);
-        setIsListening(false);
-      };
-
-      recognitionRef.current.onend = () => {
-        setIsListening(false);
-      };
-    }
-
-    return () => {
-      if (recognitionRef.current) {
-        recognitionRef.current.stop();
-      }
-    };
-  }, []);
-
-  const startListening = () => {
-    if (recognitionRef.current && !isListening) {
-      setIsListening(true);
-      setTranscript("");
-      recognitionRef.current.start();
-    }
-  };
-
-  const stopListening = () => {
-    if (recognitionRef.current && isListening) {
-      recognitionRef.current.stop();
-      setIsListening(false);
-    }
-  };
 
   const handleSendMessage = async (message) => {
     if (!message.trim()) return;
@@ -267,11 +209,22 @@ const VoiceAssistant = () => {
     };
     setMessages((prev) => [...prev, userMessage]);
     setTranscript("");
-    setIsProcessing(true);
     setIsTyping(true);
 
-    setTimeout(() => {
-      const aiResponse = generateAIResponse(message);
+    try {
+      const res = await axios.post(
+        "http://localhost:3300/api/gemini/generateai",
+        { userInput: message },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      );
+      console.log("✅ AI response received:");
+      const aiResponse =
+        res.data.reply || "I'm sorry, I couldn't process that request.";
       const assistantMessage = {
         id: Date.now() + 1,
         type: "assistant",
@@ -279,33 +232,17 @@ const VoiceAssistant = () => {
         timestamp: new Date(),
       };
       setMessages((prev) => [...prev, assistantMessage]);
-      setIsProcessing(false);
+    } catch (error) {
+      console.error("❌ Chat error:", error);
+      const errorMessage = {
+        id: Date.now() + 1,
+        type: "assistant",
+        content: "Sorry, I encountered an error. Please try again.",
+        timestamp: new Date(),
+      };
+      setMessages((prev) => [...prev, errorMessage]);
+    } finally {
       setIsTyping(false);
-
-      if ("speechSynthesis" in window) {
-        const utterance = new SpeechSynthesisUtterance(aiResponse);
-        utterance.rate = 0.9;
-        utterance.pitch = 1;
-        window.speechSynthesis.speak(utterance);
-      }
-    }, 1500);
-  };
-
-  const generateAIResponse = (userMessage) => {
-    const message = userMessage.toLowerCase();
-
-    if (message.includes("expense") || message.includes("spending")) {
-      return "I can help you track your expenses! You can add new expenses, categorize them, and view your spending patterns. Would you like me to guide you through adding a new expense?";
-    } else if (message.includes("budget")) {
-      return "Let me help you with your budget! You can set monthly budgets for different categories, track your progress, and get alerts when you're approaching your limits. What would you like to know about your budget?";
-    } else if (message.includes("report") || message.includes("analytics")) {
-      return "I can show you detailed analytics about your spending! You can view charts, compare months, and see where your money goes. Would you like me to explain any specific metric?";
-    } else if (message.includes("hello") || message.includes("hi")) {
-      return "Hello! I'm here to help you manage your finances better. You can ask me about expenses, budgets, analytics, or any financial questions you have.";
-    } else if (message.includes("help")) {
-      return "I can assist you with: 📊 Tracking expenses, 💰 Managing budgets, 📈 Viewing analytics, 🎯 Setting financial goals, 💡 Financial tips and advice. What would you like help with?";
-    } else {
-      return "That's an interesting question! While I'm focused on helping with financial management, I can assist you with budgeting, expense tracking, and financial analytics. Is there something specific about your finances you'd like help with?";
     }
   };
 
@@ -457,12 +394,7 @@ const VoiceAssistant = () => {
                   )}
 
                   <button
-                    onClick={() => {
-                      setIsOpen(false);
-                      if ("speechSynthesis" in window) {
-                        window.speechSynthesis.cancel();
-                      }
-                    }}
+                    onClick={() => setIsOpen(false)}
                     className="p-2 bg-zinc-800 hover:bg-zinc-700 rounded-lg flex items-center justify-center transition-colors border border-zinc-700"
                   >
                     <svg
@@ -544,7 +476,10 @@ const VoiceAssistant = () => {
               ) : (
                 // Text Chat Mode
                 <div className="w-full h-full flex flex-col">
-                  <div className="flex-1 overflow-y-auto p-6 space-y-4">
+                  <div
+                    className="flex-1 overflow-y-auto p-6 space-y-4"
+                    style={{ maxHeight: "calc(600px - 180px)" }}
+                  >
                     {messages.map((message) => (
                       <div
                         key={message.id}
@@ -555,13 +490,15 @@ const VoiceAssistant = () => {
                         }`}
                       >
                         <div
-                          className={`max-w-[75%] rounded-xl px-4 py-3 ${
+                          className={`max-w-[75%] rounded-xl px-4 py-3 break-words ${
                             message.type === "user"
                               ? "bg-white text-black"
                               : "bg-zinc-800 text-zinc-100 border border-zinc-700"
                           }`}
                         >
-                          <p className="text-sm">{message.content}</p>
+                          <p className="text-sm whitespace-pre-wrap">
+                            {message.content}
+                          </p>
                           <p
                             className={`text-xs mt-1 ${
                               message.type === "user"
@@ -610,7 +547,7 @@ const VoiceAssistant = () => {
                       />
                       <button
                         onClick={() => handleSendMessage(transcript)}
-                        disabled={!transcript.trim() || isProcessing}
+                        disabled={!transcript.trim() || isTyping}
                         className="px-4 py-2 bg-white hover:bg-zinc-100 disabled:bg-zinc-700 text-black disabled:text-zinc-400 rounded-lg font-medium transition-colors disabled:cursor-not-allowed"
                       >
                         Send
