@@ -31,10 +31,28 @@ export const Dashboard = () => {
       }
     }
 
-    if (user) {
-      console.log("User data:", user);
-    }
-  }, [user, isLoading, isFetchingUserData, navigate]);
+  const fetchExpenses = async () => {
+    // TODO: Replace with actual API call
+    // const response = await axios.get('/api/expenses', {
+    //   headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
+    // });
+    // setExpenses(response.data.expenses);
+
+    // Mock expenses for now
+    const mockExpenses = [
+      { id: 1, category: "Food", amount: 150 },
+      { id: 2, category: "Transport", amount: 50 },
+      { id: 3, category: "Utilities", amount: 100 },
+    ];
+    setExpenses(mockExpenses);
+
+    // Calculate total spent
+    const total = mockExpenses.reduce(
+      (sum, expense) => sum + expense.amount,
+      0
+    );
+    setTotalSpent(total);
+  };
 
   // Calculate metrics
   const totalSpent = getTotalSpent();
@@ -109,7 +127,6 @@ export const Dashboard = () => {
               trendText={`${remainingPercentage}% remaining`}
             />
           </div>
-
           {/* Categories Overview */}
           {user.categories && user.categories.length > 0 && (
             <div className="bg-zinc-900 border border-zinc-800 rounded-lg p-6">
