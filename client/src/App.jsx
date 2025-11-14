@@ -6,7 +6,7 @@ import { Dashboard } from "./pages/dashboard";
 import { Routes, Route } from "react-router-dom";
 
 import LoginPage from "./pages/login";
-import Welcomepage from "./pages/WelcomePage";
+import Welcomepage from "./pages/Welcomepage";
 import FeaturesPage from "./pages/featurepage";
 
 function App() {

@@ -1,99 +1,10 @@
 import { useState } from "react";
-
+import { Navbar } from "../components/navbar";
 export default function FeaturesPage() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
   return (
     <div className="relative flex min-h-screen w-full flex-col overflow-x-hidden bg-black text-white">
       {/* Header */}
-      <header className="sticky top-0 z-50 flex justify-center border-b border-zinc-800 bg-black/80 backdrop-blur-sm">
-        <div className="flex w-full max-w-6xl items-center justify-between whitespace-nowrap px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-white rounded-md flex items-center justify-center">
-              <span className="text-black font-bold text-sm">F</span>
-            </div>
-            <h2 className="text-xl font-semibold">Finance</h2>
-          </div>
-
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex flex-1 justify-end gap-8">
-            <div className="flex items-center gap-8">
-              <a
-                className="text-sm font-medium text-white transition-colors"
-                href="#"
-              >
-                Features
-              </a>
-              <a
-                className="text-sm font-medium text-zinc-400 hover:text-white transition-colors"
-                href="#"
-              >
-                Pricing
-              </a>
-              <a
-                className="text-sm font-medium text-zinc-400 hover:text-white transition-colors"
-                href="#"
-              >
-                Blog
-              </a>
-            </div>
-            <button className="flex min-w-[84px] cursor-pointer items-center justify-center rounded-md h-10 px-4 bg-white text-black text-sm font-medium hover:bg-zinc-100 transition-all">
-              <span className="truncate">Sign Up</span>
-            </button>
-          </div>
-
-          {/* Mobile Menu Button */}
-          <div className="md:hidden">
-            <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="text-white"
-            >
-              <svg
-                className="w-6 h-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
-              </svg>
-            </button>
-          </div>
-        </div>
-
-        {/* Mobile Menu */}
-        {mobileMenuOpen && (
-          <div className="md:hidden absolute top-full left-0 right-0 bg-zinc-900 border-b border-zinc-800 p-4">
-            <div className="flex flex-col gap-4">
-              <a
-                className="text-sm font-medium text-white transition-colors"
-                href="#"
-              >
-                Features
-              </a>
-              <a
-                className="text-sm font-medium text-zinc-400 hover:text-white transition-colors"
-                href="#"
-              >
-                Pricing
-              </a>
-              <a
-                className="text-sm font-medium text-zinc-400 hover:text-white transition-colors"
-                href="#"
-              >
-                Blog
-              </a>
-              <button className="flex cursor-pointer items-center justify-center rounded-md h-10 px-4 bg-white text-black text-sm font-medium hover:bg-zinc-100 transition-all">
-                Sign Up
-              </button>
-            </div>
-          </div>
-        )}
-      </header>
+      <Navbar />
 
       {/* Main Content */}
       <main className="flex flex-1 flex-col items-center">
@@ -153,7 +64,7 @@ export default function FeaturesPage() {
               <div className="bg-zinc-900 border border-zinc-800 rounded-lg p-8">
                 <div className="space-y-4">
                   <div className="flex gap-3">
-                    <div className="w-8 h-8 rounded-full bg-zinc-700 flex-shrink-0 flex items-center justify-center">
+                    <div className="w-8 h-8 rounded-full bg-zinc-700 shrink-0 flex items-center justify-center">
                       <span className="text-white text-xs font-bold">You</span>
                     </div>
                     <div className="flex-1 bg-zinc-800 rounded-lg p-3">
@@ -163,7 +74,7 @@ export default function FeaturesPage() {
                     </div>
                   </div>
                   <div className="flex gap-3">
-                    <div className="w-8 h-8 rounded-full bg-white flex-shrink-0 flex items-center justify-center">
+                    <div className="w-8 h-8 rounded-full bg-white shrink-0 flex items-center justify-center">
                       <span className="text-black text-xs font-bold">AI</span>
                     </div>
                     <div className="flex-1 bg-green-500/10 border border-green-500/20 rounded-lg p-3">
