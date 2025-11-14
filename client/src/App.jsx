@@ -9,6 +9,7 @@ import { Budget } from "./pages/budget";
 import { Analytics } from "./pages/analytics";
 import Settings from "./pages/settings";
 import { Routes, Route, Router } from "react-router-dom";
+import { useDocumentTitle } from "./hooks/useDocumentTitle";
 
 import LoginPage from "./pages/loginPage";
 import Welcomepage from "./pages/Welcomepage";
@@ -17,6 +18,9 @@ import SignupPage from "./pages/signupPage";
 import Contact from "./pages/contact";
 function App() {
   const [count, setCount] = useState(0);
+
+  // Update document title based on current route
+  useDocumentTitle();
 
   return (
     <>
