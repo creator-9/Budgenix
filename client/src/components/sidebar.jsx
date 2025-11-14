@@ -1,17 +1,38 @@
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
+import { Link, useLocation } from "react-router-dom";
 
 export function Sidebar() {
-  const [selected, setSelected] = useState("dashboard");
+  const location = useLocation();
   const { user } = useAuth();
 
   const menuItems = [
-    { id: "dashboard", label: "Dashboard", icon: DashboardIcon },
-    { id: "transactions", label: "Transactions", icon: TransactionsIcon },
-    { id: "budgets", label: "Budgets", icon: BudgetsIcon },
-    { id: "analytics", label: "Analytics", icon: AnalyticsIcon },
-    { id: "settings", label: "Settings", icon: SettingsIcon },
+    {
+      id: "dashboard",
+      label: "Dashboard",
+      icon: DashboardIcon,
+      link: "/dashboard",
+    },
+    {
+      id: "transactions",
+      label: "Transactions",
+      icon: TransactionsIcon,
+      link: "/transactions",
+    },
+    { id: "budgets", label: "Budgets", icon: BudgetsIcon, link: "/budget" },
+    {
+      id: "analytics",
+      label: "Analytics",
+      icon: AnalyticsIcon,
+      link: "/analytics",
+    },
   ];
+
+  // Helper function to check if current route matches menu item
+  const isActiveRoute = (itemLink) => {
+    if (!itemLink) return false;
+    return location.pathname === itemLink;
+  };
 
   const logoutHandler = () => {
     localStorage.removeItem("accessToken");
@@ -29,27 +50,30 @@ export function Sidebar() {
       <div className="py-6 px-3 border-b border-zinc-800">
         <div className="flex items-center gap-2">
           <div className="w-8 h-8 bg-white rounded-md flex items-center justify-center">
-            <span className="text-black font-bold text-sm">B</span>
+            <span className="text-black font-bold text-sm">F</span>
           </div>
           <span className="text-white font-semibold text-lg">FinBuddy</span>
         </div>
       </div>
 
       <nav className="flex-1 py-4 space-y-1">
-        {menuItems.map((item) => (
-          <button
-            key={item.id}
-            onClick={() => setSelected(item.id)}
-            className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium transition ${
-              selected === item.id
-                ? "bg-zinc-800 text-white"
-                : "text-zinc-400 hover:text-white hover:bg-zinc-800/50"
-            }`}
-          >
-            <item.icon className="w-5 h-5" />
-            {item.label}
-          </button>
-        ))}
+        {menuItems.map((item) => {
+          const isActive = isActiveRoute(item.link);
+          return (
+            <Link
+              to={item.link || "#"}
+              key={item.id}
+              className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium transition ${
+                isActive
+                  ? "bg-zinc-800 text-white"
+                  : "text-zinc-400 hover:text-white hover:bg-zinc-800/50"
+              } ${!item.link ? "cursor-not-allowed opacity-50" : ""}`}
+            >
+              <item.icon className="w-5 h-5" />
+              {item.label}
+            </Link>
+          );
+        })}
       </nav>
 
       <div className="p-4 border-t border-zinc-800 space-y-3">
@@ -76,6 +100,17 @@ export function Sidebar() {
             </div>
           </div>
         )}
+        <Link
+          to="/settings"
+          className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium transition ${
+            isActiveRoute("/settings")
+              ? "bg-zinc-800 text-white border-white"
+              : "text-zinc-400 hover:text-white hover:bg-zinc-800/50"
+          }`}
+        >
+          <SettingsIcon className="w-5 h-5" />
+          Settings
+        </Link>
         <button
           onClick={logoutHandler}
           className="w-full flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium text-red-400 hover:text-red-300 hover:bg-red-500/10 transition border border-transparent hover:border-red-500/20"
