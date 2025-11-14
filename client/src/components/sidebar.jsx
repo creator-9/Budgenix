@@ -48,9 +48,13 @@ export function Sidebar() {
   return (
     <aside className="w-64 bg-zinc-900 border-r border-zinc-800 flex flex-col sticky top-0 h-screen">
       <div className="py-6 px-3 border-b border-zinc-800">
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-white rounded-md flex items-center justify-center">
-            <span className="text-black font-bold text-sm">F</span>
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-full flex items-center justify-center pt-2">
+            <img
+              src="https://res.cloudinary.com/dsplnfii2/image/upload/v1763155676/image-removebg-preview_shtfca.png"
+              alt="FinBuddy Logo"
+              className="w-10 h-10 object-contain"
+            />
           </div>
           <span className="text-white font-semibold text-lg">FinBuddy</span>
         </div>
