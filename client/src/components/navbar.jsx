@@ -5,16 +5,19 @@ export function Navbar() {
   return (
     <header className="sticky top-0 z-50 flex justify-center border-b border-zinc-800 bg-black/80 backdrop-blur-sm">
       <div className="flex w-full max-w-6xl items-center justify-between whitespace-nowrap px-4 sm:px-6 lg:px-8 py-4">
-        <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-full flex items-center justify-center">
-            <img
-              src="https://res.cloudinary.com/dsplnfii2/image/upload/v1763158452/image-removebg-preview_ysz4j3.png"
-              alt="FinBuddy Logo"
-              className="w-10 h-10 object-contain"
-            />
+        <Link to="/">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-full flex items-center justify-center">
+              <img
+                src="https://res.cloudinary.com/dsplnfii2/image/upload/v1763158452/image-removebg-preview_ysz4j3.png"
+                alt="FinBuddy Logo"
+                className="w-10 h-10 object-contain"
+              />
+            </div>
+
+            <span className="text-white font-semibold text-lg">FinBuddy</span>
           </div>
-          <span className="text-white font-semibold text-lg">FinBuddy</span>
-        </div>
+        </Link>
 
         {/* Desktop Navigation */}
         <div className="hidden md:flex flex-1 justify-end gap-8">
