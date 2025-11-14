@@ -1,116 +1,160 @@
-// Sidebar component resembling the provided dashboard mock
-// Uses Tailwind CSS v4 + DaisyUI menu styles; no extra deps
+import { useState } from "react";
 
-const navItems = [
-  { key: "dashboard", label: "Dashboard", icon: DashIcon },
-  { key: "transactions", label: "Transactions", icon: CardIcon },
-  { key: "goals", label: "Goals", icon: GoalIcon },
-  { key: "settings", label: "Settings", icon: GearIcon },
-];
+export function Sidebar() {
+  const [selected, setSelected] = useState("dashboard");
 
-export default function Sidebar({ active = "dashboard", onNavigate }) {
+  const menuItems = [
+    { id: "dashboard", label: "Dashboard", icon: DashboardIcon },
+    { id: "transactions", label: "Transactions", icon: TransactionsIcon },
+    { id: "budgets", label: "Budgets", icon: BudgetsIcon },
+    { id: "analytics", label: "Analytics", icon: AnalyticsIcon },
+    { id: "settings", label: "Settings", icon: SettingsIcon },
+  ];
+
   return (
-    <aside className="h-screen shrink-0 border-r bg-base-100">
-      <div className="flex items-center gap-3 px-4 py-5">
-        <div className="avatar placeholder">
-          <div className="w-8 rounded-full bg-primary text-primary-content grid place-items-center">
-            <span className="text-sm font-semibold">B</span>
+    <aside className="w-64 bg-zinc-900 border-r border-zinc-800 flex flex-col">
+      <div className="py-6 px-3 border-b border-zinc-800">
+        <div className="flex items-center gap-2">
+          <div className="w-8 h-8 bg-white rounded-md flex items-center justify-center">
+            <span className="text-black font-bold text-sm">F</span>
           </div>
+          <span className="text-white font-semibold text-lg">Finance</span>
         </div>
-        <span className="text-lg font-semibold">BudgetAI</span>
       </div>
 
-      <ul className="menu px-2">
-        {navItems.map(({ key, label, icon: Icon }) => (
-          <li key={key}>
-            <button
-              type="button"
-              className={`gap-3 ${active === key ? "active" : ""}`}
-              onClick={() => onNavigate && onNavigate(key)}
-            >
-              <Icon className="size-5" />
-              {label}
-            </button>
-          </li>
+      <nav className="flex-1 py-4 space-y-1">
+        {menuItems.map((item) => (
+          <button
+            key={item.id}
+            onClick={() => setSelected(item.id)}
+            className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium transition ${
+              selected === item.id
+                ? "bg-zinc-800 text-white"
+                : "text-zinc-400 hover:text-white hover:bg-zinc-800/50"
+            }`}
+          >
+            <item.icon className="w-5 h-5" />
+            {item.label}
+          </button>
         ))}
-      </ul>
+      </nav>
 
-      <div className="mt-auto px-2 absolute bottom-3 left-0 right-0">
-        <ul className="menu">
-          <li>
-            <button type="button" className="gap-3 text-error">
-              <LogoutIcon className="size-5" />
-              Logout
-            </button>
-          </li>
-        </ul>
+      <div className="p-4 border-t border-zinc-800">
+        <div className="flex items-center gap-3 px-3 py-2">
+          <div className="w-8 h-8 bg-zinc-800 rounded-full flex items-center justify-center">
+            <span className="text-white text-sm font-medium">A</span>
+          </div>
+          <div className="flex-1 min-w-0">
+            <p className="text-sm font-medium text-white truncate">
+              Alex Johnson
+            </p>
+            <p className="text-xs text-zinc-400 truncate">alex@company.com</p>
+          </div>
+        </div>
       </div>
     </aside>
   );
 }
 
-function DashIcon({ className = "" }) {
+// Icon components
+function DashboardIcon({ className }) {
   return (
     <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
-      fill="currentColor"
       className={className}
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
     >
-      <path d="M3 5.25A2.25 2.25 0 0 1 5.25 3h4.5A2.25 2.25 0 0 1 12 5.25v4.5A2.25 2.25 0 0 1 9.75 12h-4.5A2.25 2.25 0 0 1 3 9.75v-4.5zM13.5 5.25A2.25 2.25 0 0 1 15.75 3h3A2.25 2.25 0 0 1 21 5.25v1.5A2.25 2.25 0 0 1 18.75 9h-3A2.25 2.25 0 0 1 13.5 6.75v-1.5zM3 14.25A2.25 2.25 0 0 1 5.25 12h3A2.25 2.25 0 0 1 10.5 14.25v3A2.25 2.25 0 0 1 8.25 19.5h-3A2.25 2.25 0 0 1 3 17.25v-3zM13.5 13.5A2.25 2.25 0 0 1 15.75 11.25h4.5A2.25 2.25 0 0 1 22.5 13.5v4.5A2.25 2.25 0 0 1 20.25 20.25h-4.5A2.25 2.25 0 0 1 13.5 18.75v-5.25z" />
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"
+      />
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d="M8 5v4m8-4v4"
+      />
     </svg>
   );
 }
 
-function CardIcon({ className = "" }) {
+function TransactionsIcon({ className }) {
   return (
     <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
-      fill="currentColor"
       className={className}
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
     >
-      <path d="M3 6.75A2.75 2.75 0 0 1 5.75 4h12.5A2.75 2.75 0 0 1 21 6.75V9H3V6.75zM3 10.5h18v6.75A2.75 2.75 0 0 1 18.25 20H5.75A2.75 2.75 0 0 1 3 17.25V10.5zm3 4.125a.875.875 0 0 0 0 1.75h4.5a.875.875 0 0 0 0-1.75H6z" />
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+      />
     </svg>
   );
 }
 
-function GoalIcon({ className = "" }) {
+function BudgetsIcon({ className }) {
   return (
     <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
-      fill="currentColor"
       className={className}
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
     >
-      <path d="M12 2.25a9.75 9.75 0 1 0 9.75 9.75A9.76 9.76 0 0 0 12 2.25zm0 3a6.75 6.75 0 1 1-6.75 6.75A6.76 6.76 0 0 1 12 5.25zm0 2.5a4.25 4.25 0 1 0 4.25 4.25A4.25 4.25 0 0 0 12 7.75z" />
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"
+      />
     </svg>
   );
 }
 
-function GearIcon({ className = "" }) {
+function AnalyticsIcon({ className }) {
   return (
     <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
-      fill="currentColor"
       className={className}
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
     >
-      <path d="M10.325 2.75a1.25 1.25 0 0 1 2.35 0l.32 1.02a7.73 7.73 0 0 1 1.72.71l.98-.57a1.25 1.25 0 0 1 1.7.46l1.25 2.16a1.25 1.25 0 0 1-.45 1.7l-.93.54c.13.56.2 1.14.2 1.72s-.07 1.16-.2 1.72l.93.54a1.25 1.25 0 0 1 .45 1.7l-1.25 2.16a1.25 1.25 0 0 1-1.7.46l-.98-.57a7.73 7.73 0 0 1-1.72.71l-.32 1.02a1.25 1.25 0 0 1-2.35 0l-.32-1.02a7.73 7.73 0 0 1-1.72-.71l-.98.57a1.25 1.25 0 0 1-1.7-.46L3.875 15.7a1.25 1.25 0 0 1 .45-1.7l.93-.54A7.94 7.94 0 0 1 5.05 12c0-.58.07-1.16.2-1.72l-.93-.54a1.25 1.25 0 0 1-.45-1.7l1.25-2.16a1.25 1.25 0 0 1 1.7-.46l.98.57c.56-.3 1.12-.54 1.72-.71l.32-1.02zM12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6z" />
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+      />
     </svg>
   );
 }
 
-function LogoutIcon({ className = "" }) {
+function SettingsIcon({ className }) {
   return (
     <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
-      fill="currentColor"
       className={className}
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
     >
-      <path d="M13 4.5a1 1 0 0 0-1-1H6.75A2.75 2.75 0 0 0 4 6.25v11.5A2.75 2.75 0 0 0 6.75 20.5H12a1 1 0 1 0 0-2H6.75c-.414 0-.75-.336-.75-.75V6.25c0-.414.336-.75.75-.75H12a1 1 0 0 0 1-1z" />
-      <path d="M15.53 8.47a.75.75 0 0 0-1.06 1.06l1.72 1.72H9a.75.75 0 0 0 0 1.5h7.19l-1.72 1.72a.75.75 0 1 0 1.06 1.06l3.25-3.25a.75.75 0 0 0 0-1.06l-3.25-3.25z" />
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+      />
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+      />
     </svg>
   );
 }
