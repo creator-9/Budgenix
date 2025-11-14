@@ -63,7 +63,7 @@ export const startAI = async (req: Request, res: Response) => {
         idle_timeout: 300,
 
         llm: {
-          url: `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:streamGenerateContent?alt=sse&key=AIzaSyDsiTxlktLQfZAwTAY8YYW-ynaJSw6TWAg`,
+          url: `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:streamGenerateContent?alt=sse&key=${process.env.GEMINI_API_KEY_SECOND}`,
           system_messages: [
             {
               parts: [
