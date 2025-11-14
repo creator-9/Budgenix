@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const RecentActivity = () => {
   // Dummy data matching the design from the attachment
@@ -120,9 +121,12 @@ const RecentActivity = () => {
 
       {/* View All Link */}
       <div className="mt-6 pt-4 border-t border-gray-700">
-        <button className="text-teal-400 text-sm font-medium hover:text-teal-300 transition-colors">
+        <Link
+          to="/transactions"
+          className="text-teal-400 text-sm font-medium hover:text-teal-300 transition-colors inline-block"
+        >
           View all transactions
-        </button>
+        </Link>
       </div>
     </div>
   );
