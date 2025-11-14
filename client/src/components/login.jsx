@@ -1,5 +1,5 @@
 import { useState } from "react";
-
+import { Link } from "react-router-dom";
 export default function Login({ onSubmit, onForgot }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -92,7 +92,9 @@ export default function Login({ onSubmit, onForgot }) {
           <div className="mt-6 pt-6 border-t border-zinc-800 text-center">
             <p className="text-sm text-zinc-400">
               Don't have an account?{" "}
-              <button className="text-white hover:underline">Sign up</button>
+              <Link to="/signup" className="text-white hover:underline">
+                Sign up
+              </Link>
             </p>
           </div>
         </div>
