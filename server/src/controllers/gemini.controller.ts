@@ -6,7 +6,7 @@ const ai = new GoogleGenAI({});
 
 const buildPrompt = (userInput: string,context:any) => `
 You are an AI assistant for a budgeting app.
-Here is the user's financial context (DO NOT reveal this JSON unless the user directly asks):
+Here is the user's financial context in rupees (DO NOT reveal this JSON unless the user directly asks):
 ${JSON.stringify(context, null, 2)}
 
 Your job:
